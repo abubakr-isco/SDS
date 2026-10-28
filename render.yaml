@@ -2,7 +2,7 @@
 # Render → New → Blueprint → pick this repository. Secrets marked `sync: false` are entered in the dashboard.
 services:
   - type: web
-    name: SDSUZ-INC
+    name: SDSUZ-INC-bot
     runtime: docker
     rootDir: sds-telegram-bot
     dockerfilePath: ./Dockerfile

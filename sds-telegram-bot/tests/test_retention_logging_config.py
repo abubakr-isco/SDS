@@ -115,3 +115,12 @@ def test_web_port_follows_platform_port(monkeypatch):
     monkeypatch.setenv("WEB_PORT", "8081")  # an explicit WEB_PORT wins
     assert make_settings().web_port == 8081
     assert make_settings(web_port=9000).web_port == 9000
+
+
+def test_web_host_binds_all_interfaces_on_platforms(monkeypatch):
+    monkeypatch.delenv("WEB_HOST", raising=False)
+    monkeypatch.delenv("PORT", raising=False)
+    assert make_settings().web_host == "127.0.0.1"  # local / VPS default stays private
+    monkeypatch.setenv("PORT", "10000")
+    assert make_settings().web_host == "0.0.0.0"
+    assert make_settings(web_host="127.0.0.1").web_host == "127.0.0.1"  # explicit setting wins

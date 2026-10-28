@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Annotated, Literal
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from pydantic import AliasChoices, Field, SecretStr, field_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -118,6 +119,14 @@ class Settings(DatabaseSettings):
     @property
     def tz(self) -> ZoneInfo:
         return ZoneInfo(self.timezone)
+
+    @model_validator(mode="after")
+    def _platform_binding(self) -> Settings:
+        # Hosting platforms (Render, Railway, Heroku…) set PORT and route traffic to 0.0.0.0:$PORT.
+        # Listen on all interfaces there unless WEB_HOST was set explicitly.
+        if os.environ.get("PORT") and "web_host" not in self.model_fields_set:
+            self.web_host = "0.0.0.0"  # noqa: S104 — required by the platform's router
+        return self
 
     @property
     def is_development(self) -> bool:

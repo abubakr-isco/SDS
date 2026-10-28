@@ -29,3 +29,4 @@ dist-ssr
 # Original photos and screenshots dropped into the project folder (processed copies live in public/images)
 /2026-*.jpg
 /Снимок экрана*.png
+/[0-9a-f]*-*-*-*-*.png

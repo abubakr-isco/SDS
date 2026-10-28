@@ -168,7 +168,7 @@ export const services: Service[] = [
     summary: 'Transportation solutions for shipments moving across longer distances.',
     detail:
       'Planning for multi-day, multi-state moves, with pickup and delivery windows agreed before the truck rolls.',
-    image: { name: 'svc-longhaul', widths: W, alt: 'A semi-truck and dry van trailer rolling down the highway at dusk', position: '50% 60%' },
+    image: { name: 'svc-sds-longhaul', widths: W, alt: 'A white SDS UZ semi-truck and branded trailer moving at speed on a highway', position: '30% 55%' },
     confirmed: true,
   },
   {
@@ -177,7 +177,7 @@ export const services: Service[] = [
     summary: 'Transportation support for regional routes and recurring shipping needs.',
     detail:
       'Shorter routes and repeat lanes within a region, suited to shippers who move freight on a regular schedule.',
-    image: { name: 'svc-regional', widths: W, alt: 'Semi-trucks and cars traveling on a busy multi-lane interstate', position: '50% 40%' },
+    image: { name: 'svc-sds-regional', widths: W, alt: 'A white SDS UZ semi-truck and branded trailer on a highway under a blue sky', position: '45% 60%' },
     confirmed: true,
   },
   {
@@ -186,7 +186,7 @@ export const services: Service[] = [
     summary: 'Consistent transportation capacity for businesses with ongoing requirements.',
     detail:
       'Capacity set aside for your business on an agreed schedule, for shippers who need the same reliable service week after week.',
-    image: { name: 'svc-dedicated', widths: W, alt: 'Three white semi-trucks driving in a line along a curving road in golden light', position: '35% 50%' },
+    image: { name: 'svc-sds-dedicated', widths: W, alt: 'A white SDS UZ semi-truck and branded trailer parked at a warehouse loading dock', position: '45% 60%' },
     confirmed: true,
   },
   {

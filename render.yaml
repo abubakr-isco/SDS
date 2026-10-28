@@ -1,0 +1,38 @@
+# Render Blueprint: SDS UZ Telegram bot (+ website quote endpoint) and its PostgreSQL database.
+# Render → New → Blueprint → pick this repository. Secrets marked `sync: false` are entered in the dashboard.
+services:
+  - type: web
+    name: SDSUZ-INC
+    runtime: docker
+    rootDir: sds-telegram-bot
+    dockerfilePath: ./Dockerfile
+    # Not "free": free web services sleep when idle, which would stop the Telegram bot.
+    plan: starter
+    numInstances: 1 # long polling: exactly one instance may receive Telegram updates
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sdsuz-inc-db
+          property: connectionString
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_TELEGRAM_IDS
+        sync: false
+      - key: WEBSITE_ALLOWED_ORIGINS # e.g. https://your-site.vercel.app,https://www.sdsuzinc.com
+        sync: false
+      - key: ENVIRONMENT
+        value: production
+      - key: TIMEZONE
+        value: America/Chicago
+      - key: WEB_HOST
+        value: 0.0.0.0
+      - key: WEB_TRUST_PROXY # Render's proxy sets X-Forwarded-For
+        value: "true"
+
+databases:
+  - name: sdsuz-inc-db
+    databaseName: sds_bot
+    user: sds_bot
+    plan: basic-256mb
+    ipAllowList: [] # internal connections only

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -16,7 +16,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 class DatabaseSettings(BaseSettings):
     """Only what Alembic and the CLI need — no bot token required."""
 
-    model_config = SettingsConfigDict(env_file=PROJECT_ROOT / ".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=PROJECT_ROOT / ".env", env_file_encoding="utf-8", extra="ignore", populate_by_name=True
+    )
 
     database_url: SecretStr = Field(
         description="SQLAlchemy async URL, e.g. postgresql+asyncpg://user:pass@localhost:5432/sds_bot"
@@ -60,7 +62,8 @@ class Settings(DatabaseSettings):
     # Website quote form endpoint (POST /api/quote), served by the bot process next to polling.
     web_enabled: bool = True
     web_host: str = "127.0.0.1"  # keep local; publish through an HTTPS reverse proxy (see docs/DEPLOYMENT.md)
-    web_port: int = Field(default=8080, ge=1, le=65535)
+    # WEB_PORT, or PORT as set by hosting platforms such as Render.
+    web_port: int = Field(default=8080, ge=1, le=65535, validation_alias=AliasChoices("WEB_PORT", "PORT", "web_port"))
     # Comma-separated origins allowed to submit from a browser, e.g. https://www.sdsuzinc.com
     website_allowed_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
     web_trust_proxy: bool = False  # true only behind a reverse proxy that sets X-Forwarded-For

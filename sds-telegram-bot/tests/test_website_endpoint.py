@@ -66,7 +66,13 @@ async def test_website_request_is_saved_and_sent_to_admins_in_telegram(client, c
 
     await ctx.drain()
     [notification] = sent_to(bot.mock.requests, ADMIN_ID)
-    for fragment in ["SDS-Q-2026-0001", "Website form", "Maria Lopez", "+12155550144", "Philadelphia, PA → Columbus, OH"]:
+    for fragment in [
+        "SDS-Q-2026-0001",
+        "Website form",
+        "Maria Lopez",
+        "+12155550144",
+        "Philadelphia, PA → Columbus, OH",
+    ]:
         assert fragment in notification.text
 
 
@@ -133,9 +139,7 @@ async def test_per_ip_rate_limit(client, ctx):
 
 
 async def test_cors(client):
-    ok = await client.options(
-        "/api/quote", headers={"Origin": SITE, "Access-Control-Request-Method": "POST"}
-    )
+    ok = await client.options("/api/quote", headers={"Origin": SITE, "Access-Control-Request-Method": "POST"})
     assert ok.status == 204 and ok.headers["Access-Control-Allow-Origin"] == SITE
     assert "POST" in ok.headers["Access-Control-Allow-Methods"]
 

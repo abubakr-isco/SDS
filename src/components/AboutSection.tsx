@@ -11,13 +11,13 @@ export function AboutSection() {
       <div ref={imageRef} className="relative h-[60vw] max-h-[520px] min-h-[280px] lg:absolute lg:inset-y-0 lg:left-0 lg:h-auto lg:max-h-none lg:w-1/2">
         <div className="reveal-image absolute inset-0 bg-charcoal">
           <img
-            src="/images/about-highway-bw-800.webp"
-            srcSet="/images/about-highway-bw-800.webp 800w, /images/about-highway-bw-1400.webp 1400w"
+            src="/images/about-sds-960.webp"
+            srcSet="/images/about-sds-640.webp 640w, /images/about-sds-960.webp 960w"
             sizes="(min-width: 1024px) 50vw, 100vw"
-            alt="A semi-truck on an open highway beneath storm clouds and mountains, in black and white"
+            alt="Front view of a white SDS UZ semi-truck under a cloudy sky"
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-cover object-[30%_60%]"
+            className="h-full w-full object-cover object-[50%_62%]"
           />
         </div>
         <span aria-hidden="true" className="lane absolute bottom-0 right-0 top-0 hidden w-[4px] lg:block" />

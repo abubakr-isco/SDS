@@ -13,22 +13,21 @@ export function HeroSection() {
       aria-labelledby="hero-title"
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-navy text-white"
     >
-      {/* Photo — on large screens it overflows to the right so the truck sits clear of the headline */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_60%_40%,#3a2a1c,#0b1220_70%)]">
+      {/* SDS's own truck. Phones: photo across the top, copy below. Desktop: photo panel on the right. */}
+      <div className="absolute inset-x-0 top-0 -z-10 h-[56svh] overflow-hidden lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-[58%]">
         <img
-          src="/images/hero-kenworth-1600.webp"
-          srcSet="/images/hero-kenworth-960.webp 960w, /images/hero-kenworth-1600.webp 1600w, /images/hero-kenworth-2400.webp 2400w"
-          sizes="130vw"
-          alt="A blue long-nose semi-truck hauling a flatbed load along a wet highway in early morning light"
+          src="/images/hero-sds-960.webp"
+          srcSet="/images/hero-sds-640.webp 640w, /images/hero-sds-960.webp 960w, /images/hero-sds-1440.webp 1440w"
+          sizes="(min-width: 1024px) 58vw, 100vw"
+          alt="A white SDS UZ semi-truck and trailer at a truck stop at night"
           fetchPriority="high"
           decoding="async"
-          className="hero-photo absolute inset-y-0 left-0 h-full w-full max-w-none object-cover object-[46%_50%] lg:w-[132%] lg:object-[50%_45%]"
+          className="hero-photo h-full w-full object-cover object-[64%_62%] lg:object-[55%_72%]"
         />
-        {/* Readability overlays */}
-        <div className="absolute inset-0 bg-navy/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/55 to-navy/10 lg:bg-gradient-to-r lg:from-navy/95 lg:via-navy/55 lg:to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-navy/90 to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-navy/70 to-transparent" />
+        {/* Readability overlays: blend the photo into the navy background */}
+        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-navy via-navy/60 to-transparent lg:h-1/3" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-navy/80 to-transparent" />
+        <div className="absolute inset-y-0 left-0 hidden w-2/3 bg-gradient-to-r from-navy via-navy/70 to-transparent lg:block" />
       </div>
 
       <div className="container-x flex flex-1 flex-col justify-end pb-10 pt-28 lg:justify-center lg:pb-12 lg:pt-28">

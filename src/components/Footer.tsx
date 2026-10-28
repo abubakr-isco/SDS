@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react'
 import { company, contact, cta, legalLinks, navigation, services, socialLinks } from '../config/site'
 import { ButtonLink } from './ui/Button'
-import { Wordmark } from './ui/Wordmark'
+import { Logo } from './ui/Logo'
 
 const year = new Date().getFullYear()
+// Avoid a double period when the legal name ends with one ("Inc.").
+const owner = company.legalName.replace(/\.$/, '')
 
 export function Footer() {
   const social = socialLinks.filter((s) => s.href)
@@ -13,8 +15,8 @@ export function Footer() {
       <div className="container-x py-16 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <a href="#top" className="text-3xl" aria-label="SDS — back to top">
-              <Wordmark />
+            <a href="#top" className="inline-block" aria-label="SDS UZ — back to top">
+              <Logo className="h-20" />
             </a>
             <p className="mt-6 max-w-sm leading-relaxed text-steel-light">{company.description}</p>
             <ButtonLink href={cta.quote.href} className="mt-8">
@@ -67,7 +69,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="container-x flex flex-col gap-4 py-6 text-sm text-steel-light sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {company.name}. All rights reserved.
+            © {year} {owner}. All rights reserved.
             {company.registration && <span className="ml-3">{company.registration}</span>}
           </p>
           <ul className="flex gap-6">

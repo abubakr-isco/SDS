@@ -106,3 +106,12 @@ def test_missing_required_settings_are_reported(monkeypatch):
 def test_libpq_database_url_is_upgraded_to_async_driver():
     url = make_settings(database_url="postgresql://u:p@localhost/db").database_url.get_secret_value()
     assert url == "postgresql+asyncpg://u:p@localhost/db"
+
+
+def test_web_port_follows_platform_port(monkeypatch):
+    monkeypatch.delenv("WEB_PORT", raising=False)
+    monkeypatch.setenv("PORT", "10000")  # Render sets PORT
+    assert make_settings().web_port == 10000
+    monkeypatch.setenv("WEB_PORT", "8081")  # an explicit WEB_PORT wins
+    assert make_settings().web_port == 8081
+    assert make_settings(web_port=9000).web_port == 9000

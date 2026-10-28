@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import { contact, cta, navigation } from '../config/site'
 import { useActiveSection, useScrolled } from '../hooks/useScrollState'
 import { ButtonLink } from './ui/Button'
-import { Wordmark } from './ui/Wordmark'
+import { Logo } from './ui/Logo'
 
 // Observe every section (not just nav targets) so nothing stays highlighted in sections without a nav item.
 const sectionIds = ['top', 'approach', 'services', 'fleet', 'about', 'quote', 'contact']
@@ -74,8 +74,8 @@ export function Navbar() {
       </a>
 
       <div className="container-x flex h-16 items-center justify-between gap-6 lg:h-20">
-        <a href="#top" className="text-2xl text-white lg:text-[1.75rem]" aria-label="SDS — back to top" onClick={() => close()}>
-          <Wordmark />
+        <a href="#top" className="-my-2 shrink-0" aria-label="SDS UZ — back to top" onClick={() => close()}>
+          <Logo className="h-12 lg:h-[60px]" />
         </a>
 
         <nav aria-label="Primary" className="hidden lg:block">

@@ -57,7 +57,7 @@ export type ResponsiveImage = {
 
 export const company = {
   name: 'SDS',
-  legalName: '[SDS legal entity name]',
+  legalName: 'SDS UZ Inc.',
   tagline: 'Moving America Forward.',
   description:
     'SDS provides trucking and freight transportation for businesses that need freight moved safely, efficiently and on time.',
@@ -145,7 +145,12 @@ export const services: Service[] = [
     summary: 'Dedicated truck capacity for larger shipments and business-critical freight.',
     detail:
       'Your freight travels on its own trailer from pickup to delivery, with no stops to load or unload other customers’ shipments.',
-    image: { name: 'svc-ftl', widths: W, alt: 'A dark blue semi-truck pulling a dry van trailer across an open lot at dusk', position: '60% 55%' },
+    image: {
+      name: 'svc-sds-ftl',
+      widths: [640, 960],
+      alt: 'A white SDS UZ semi-truck with its trailer at a warehouse loading dock at dusk',
+      position: '50% 55%',
+    },
     confirmed: true,
   },
   {
@@ -205,7 +210,12 @@ export const fleet: FleetCategory[] = [
     id: 'sleeper',
     title: 'Sleeper cab tractors',
     note: 'Built for long distances and multi-day routes.',
-    image: { name: 'fleet-sleeper', widths: W, alt: 'A red sleeper cab semi-truck pulling a dry van trailer on a desert highway', position: '50% 60%' },
+    image: {
+      name: 'fleet-sds-sleeper',
+      widths: [640, 960],
+      alt: 'A white SDS UZ Freightliner sleeper cab with its trailer at a loading facility at dusk',
+      position: '50% 68%',
+    },
     confirmed: true,
   },
   {

@@ -1,0 +1,86 @@
+# SDS company content shown by the bot.
+#
+# Only put CONFIRMED information here. Leave a field empty ("") if it is not
+# known yet — the bot hides empty fields in production and shows a setup
+# warning in development.
+
+name = "SDS"
+bot_name = "SDS Trucking"
+slogan = "Moving America Forward."
+about = """SDS is an American trucking and freight transportation company.
+
+Our goal is to build dependable relationships through professional service, clear communication, and a practical approach to transportation."""
+
+[contact]
+phone = "+1 (215) 268-3886"
+email = "dispatch@sdsuzinc.com"
+website = ""          # e.g. "https://www.example.com" once the site is live
+office_hours = ""     # e.g. "Mon–Fri, 7:00 AM – 6:00 PM CT"
+office_address = ""   # intentionally left blank
+
+# ---------------------------------------------------------------------------
+# Services. All six confirmed by SDS (Oct 2026). Set enabled = false to hide
+# a service from customers. Disabled services are hidden from customers
+# in production (shown with a warning in development).
+# ---------------------------------------------------------------------------
+
+[[services]]
+key = "ftl"
+name = "Full Truckload (FTL)"
+description = "Dedicated truck capacity for larger shipments and business-critical freight."
+enabled = true
+
+[[services]]
+key = "ltl"
+name = "Less Than Truckload (LTL)"
+description = "Flexible shipping options for freight that does not require a full trailer."
+enabled = true
+
+[[services]]
+key = "long_haul"
+name = "Long-Haul Transportation"
+description = "Transportation solutions for shipments moving across longer distances."
+enabled = true
+
+[[services]]
+key = "regional"
+name = "Regional Freight"
+description = "Transportation support for regional routes and recurring shipping needs."
+enabled = true
+
+[[services]]
+key = "dedicated"
+name = "Dedicated Transportation"
+description = "Consistent transportation capacity for businesses with ongoing requirements."
+enabled = true
+
+[[services]]
+key = "logistics"
+name = "Logistics Coordination"
+description = "Practical coordination to help manage freight movements and delivery expectations."
+enabled = true
+
+# ---------------------------------------------------------------------------
+# Freight types offered in the quote form. These describe the shipment; the
+# bot tells customers that SDS confirms whether it can handle the freight.
+# ---------------------------------------------------------------------------
+
+[[freight_types]]
+key = "general"
+label = "General Freight"
+
+[[freight_types]]
+key = "palletized"
+label = "Palletized Goods"
+
+[[freight_types]]
+key = "machinery"
+label = "Machinery / Equipment"
+
+[[freight_types]]
+key = "temp_controlled"
+label = "Temperature-Controlled Freight"
+
+[[freight_types]]
+key = "other"
+label = "Other"

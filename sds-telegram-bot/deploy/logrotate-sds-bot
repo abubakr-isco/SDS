@@ -1,0 +1,10 @@
+# For the systemd deployment, logs go to journald. To cap journal size:
+#   sudo sed -i 's/^#\?SystemMaxUse=.*/SystemMaxUse=500M/' /etc/systemd/journald.conf && sudo systemctl restart systemd-journald
+# This file rotates the backup log: sudo cp deploy/logrotate-sds-bot /etc/logrotate.d/sds-bot
+/var/log/sds-bot-backup.log {
+    weekly
+    rotate 8
+    compress
+    missingok
+    notifempty
+}

@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sds_bot
+      POSTGRES_USER: sds_bot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sds_bot -d sds_bot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # No "ports:" — PostgreSQL is reachable only by the bot on the internal network.
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://sds_bot:${POSTGRES_PASSWORD}@db:5432/sds_bot
+      WEB_HOST: 0.0.0.0
+    ports:
+      # Website form endpoint, reachable only from this server (put an HTTPS reverse proxy in front).
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Edit company content without rebuilding the image.
+      - ./config/company.toml:/app/config/company.toml:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  pgdata:

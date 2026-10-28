@@ -1,0 +1,27 @@
+# systemd unit for running the bot without Docker.
+# Install: sudo cp deploy/sds-bot.service /etc/systemd/system/ && sudo systemctl daemon-reload
+#          sudo systemctl enable --now sds-bot
+[Unit]
+Description=SDS Trucking Telegram bot
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sds
+Group=sds
+WorkingDirectory=/opt/sds-telegram-bot
+EnvironmentFile=/opt/sds-telegram-bot/.env
+ExecStartPre=/opt/sds-telegram-bot/.venv/bin/alembic upgrade head
+ExecStart=/opt/sds-telegram-bot/.venv/bin/python -m app
+Restart=on-failure
+RestartSec=5
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/sds-telegram-bot
+
+[Install]
+WantedBy=multi-user.target

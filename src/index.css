@@ -1,0 +1,201 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------
+   SDS design tokens
+   One typeface (Archivo) used across its width axis: expanded,
+   heavy caps for display (trailer-livery lettering); normal
+   width for reading text.
+---------------------------------------------------------------- */
+@theme {
+  --color-navy: #0b1220;
+  --color-navy-800: #111a2c;
+  --color-charcoal: #171c25;
+  --color-steel: #5b6676;
+  --color-steel-light: #9aa5b5;
+  --color-line: #273246;
+  --color-mist: #f3f5f7;
+  --color-rule: #dfe3e8;
+  --color-orange: #ff6a00;
+  --color-orange-deep: #c24e00; /* orange text on white backgrounds (AA contrast) */
+
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease-road: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-lane: lane 1.6s linear infinite;
+
+  @keyframes lane {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 28px;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-charcoal antialiased;
+    font-variation-settings: 'wdth' 100;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-orange text-navy;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-orange);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Expanded heavy caps — the brand's display voice */
+  .display {
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  /* Slightly narrower on phones so long words fit the column */
+  @media (max-width: 639px) {
+    .display {
+      font-variation-settings: 'wdth' 112;
+    }
+  }
+
+  .label {
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-10;
+  }
+
+  /* Highway lane stripe — the recurring brand device */
+  .lane {
+    background-image: linear-gradient(to bottom, var(--color-orange) 0 55%, transparent 55% 100%);
+    background-size: 100% 28px;
+  }
+
+  .lane-h {
+    background-image: linear-gradient(to right, var(--color-orange) 0 60%, transparent 60% 100%);
+    background-size: 24px 100%;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Motion. Everything below is skipped when the visitor prefers
+   reduced motion (see base layer).
+---------------------------------------------------------------- */
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+
+.hero-line > span {
+  display: block;
+  animation: rise 1s var(--ease-road) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.hero-fade {
+  animation: fade 0.9s ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+
+.hero-photo {
+  animation: settle 2.4s var(--ease-road) both;
+}
+
+/* Scroll reveal, toggled by useReveal() */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s var(--ease-road),
+    transform 0.8s var(--ease-road);
+}
+
+.reveal-image {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.1s var(--ease-road);
+}
+
+.is-visible.reveal,
+.is-visible .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+.is-visible.reveal-image,
+.is-visible .reveal-image {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-image {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}

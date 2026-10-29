@@ -165,6 +165,9 @@ class QuoteRequest(TimestampMixin, Base):
     freight_type: Mapped[str] = mapped_column(String(40), nullable=False)
     estimated_weight_lb: Mapped[int | None] = mapped_column(Integer)
     shipment_details: Mapped[str | None] = mapped_column(Text)
+    # Proof of SMS opt-in from the website form: when it was given and for which number. NULL = no consent.
+    sms_consent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    sms_consent_phone: Mapped[str | None] = mapped_column(String(20))
     status: Mapped[QuoteStatus] = mapped_column(
         _enum(QuoteStatus, "quote_status"),
         nullable=False,

@@ -285,6 +285,7 @@ def customer_message(request: QuoteRequest, message: str) -> str:
 def admin_new_request_text(request: QuoteRequest, customer: Customer, tz: ZoneInfo) -> str:
     company = f" ({esc(customer.company_name)})" if customer.company_name else ""
     service = f"\n<b>Service:</b> {esc(request.requested_service)}" if request.requested_service else ""
+    sms = f"\n<b>SMS consent:</b> {sms_consent_label(request, tz)}" if request.source == RequestSource.WEBSITE else ""
     return (
         f"🆕 <b>New quote request {esc(request.public_request_id)}</b>\n"
         f"<b>Source:</b> {source_label(request)}\n\n"
@@ -294,7 +295,7 @@ def admin_new_request_text(request: QuoteRequest, customer: Customer, tz: ZoneIn
         f"{esc(request.delivery_city)}, {request.delivery_state}\n"
         f"<b>Pickup:</b> {fmt_date(request.pickup_date)}\n"
         f"<b>Freight:</b> {esc(request.freight_type)} · {fmt_weight(request.estimated_weight_lb)}"
-        f"{service}\n\n"
+        f"{service}{sms}\n\n"
         f"Open: /request {esc(request.public_request_id)}"
     )
 
@@ -328,6 +329,8 @@ def admin_request_card(request: QuoteRequest, tz: ZoneInfo) -> str:
     if request.requested_service:
         lines.append(f"<b>Service:</b> {esc(request.requested_service)}")
     lines.append(f"<b>Details:</b> {esc(request.shipment_details or '—')}")
+    if request.source == RequestSource.WEBSITE:
+        lines.append(f"<b>SMS consent:</b> {sms_consent_label(request, tz)}")
     if c.telegram_user_id is None:
         lines += ["", WEBSITE_CUSTOMER_NOTE]
     return "\n".join(lines)
@@ -336,6 +339,12 @@ def admin_request_card(request: QuoteRequest, tz: ZoneInfo) -> str:
 WEBSITE_CUSTOMER_NOTE = (
     "<i>Submitted through the website — the customer isn't on Telegram. Contact them by phone or email.</i>"
 )
+
+
+def sms_consent_label(request: QuoteRequest, tz: ZoneInfo) -> str:
+    if request.sms_consent_at is None:
+        return "No — do not text this customer"
+    return f"Yes, for {esc(request.sms_consent_phone)} on {fmt_datetime(request.sms_consent_at, tz)}"
 
 
 def source_label(request: QuoteRequest) -> str:

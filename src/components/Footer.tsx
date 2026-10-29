@@ -72,7 +72,7 @@ export function Footer() {
             © {year} {owner}. All rights reserved.
             {company.registration && <span className="ml-3">{company.registration}</span>}
           </p>
-          <ul className="flex gap-6">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {legalLinks.map((l) => (
               <li key={l.href}>
                 <a href={l.href} className="hover:text-white">

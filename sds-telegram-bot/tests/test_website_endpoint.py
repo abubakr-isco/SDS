@@ -124,6 +124,32 @@ async def test_optional_fields_can_be_empty(client, ctx):
     assert request.estimated_weight_lb is None and request.shipment_details is None
 
 
+async def test_sms_consent_is_recorded_with_time_and_number(client, ctx, bot):
+    response = await post(client, {"smsConsent": True})
+    assert response.status == 201
+    async with ctx.session_factory() as session:
+        request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent_at is not None
+    assert request.sms_consent_phone == "+12155550144"
+
+    await ctx.drain()
+    [notification] = sent_to(bot.mock.requests, ADMIN_ID)
+    assert "SMS consent:</b> Yes, for +12155550144" in notification.text
+
+
+@pytest.mark.parametrize("value", [None, False, "true", 1])
+async def test_anything_but_true_is_no_sms_consent(client, ctx, bot, value):
+    payload = {} if value is None else {"smsConsent": value}
+    assert (await post(client, payload)).status == 201
+    async with ctx.session_factory() as session:
+        request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent_at is None and request.sms_consent_phone is None
+
+    await ctx.drain()
+    [notification] = sent_to(bot.mock.requests, ADMIN_ID)
+    assert "SMS consent:</b> No" in notification.text
+
+
 async def test_honeypot_submissions_are_dropped(client, ctx):
     response = await post(client, {"website": "http://spam.example"})
     assert response.status == 400

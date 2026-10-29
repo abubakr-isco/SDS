@@ -62,7 +62,7 @@ export const company = {
   description:
     'SDS provides trucking and freight transportation for businesses that need freight moved safely, efficiently and on time.',
   /** Production URL — also update index.html, public/robots.txt and public/sitemap.xml */
-  siteUrl: 'https://www.example.com',
+  siteUrl: 'https://sdsuz-inc.onrender.com',
   /** e.g. 'USDOT 0000000 · MC 000000' — leave empty until verified */
   registration: '',
 }
@@ -265,7 +265,8 @@ export const quoteForm = {
 }
 
 export const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy.html' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'SMS Terms', href: '/sms-terms' },
   { label: 'Terms of Service', href: '/terms.html' },
 ]
 

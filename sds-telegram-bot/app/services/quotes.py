@@ -40,6 +40,8 @@ class QuoteDraft(BaseModel):
     estimated_weight_lb: int | None = Field(default=None, gt=0, le=500_000)
     shipment_details: str | None = Field(default=None, max_length=1000)
     requested_service: str | None = Field(default=None, max_length=60)
+    # Website form only: the visitor checked the SMS consent box for `phone`.
+    sms_consent: bool = False
 
 
 class QuoteRateLimited(Exception):
@@ -161,6 +163,8 @@ class QuoteService:
                 freight_type=draft.freight_type,
                 estimated_weight_lb=draft.estimated_weight_lb,
                 shipment_details=draft.shipment_details,
+                sms_consent_at=now if draft.sms_consent else None,
+                sms_consent_phone=draft.phone if draft.sms_consent else None,
                 status=QuoteStatus.NEW,
             )
             session.add(request)

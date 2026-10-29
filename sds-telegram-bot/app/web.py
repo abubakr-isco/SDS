@@ -127,6 +127,8 @@ def validate_website_payload(payload: dict[str, Any], ctx: AppContext) -> tuple[
     check("freightType", freight, required=True, missing="Choose a freight type.")
     check("estimatedWeight", lambda v: {"estimated_weight_lb": parse_weight(v)}, required=False, missing="")
     check("details", lambda v: {"shipment_details": parse_details(v)}, required=False, missing="")
+    # Only an explicit JSON true counts as consent; anything else is treated as no consent.
+    values["sms_consent"] = payload.get("smsConsent") is True
 
     if errors:
         return errors, None

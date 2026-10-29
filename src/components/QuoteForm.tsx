@@ -31,6 +31,8 @@ export function QuoteForm() {
   const [status, setStatus] = useState<Status>('idle')
   const [failMessage, setFailMessage] = useState('')
   const [honeypot, setHoneypot] = useState('')
+  // Optional and unchecked by default: SMS consent is never a condition of a quote.
+  const [smsConsent, setSmsConsent] = useState(false)
   const [requestId, setRequestId] = useState('')
   const startedAt = useRef(0)
   const submissionKey = useRef('')
@@ -84,10 +86,11 @@ export function QuoteForm() {
         // Demo mode: show the loading state briefly, then say clearly that nothing was sent.
         await new Promise((r) => setTimeout(r, 700))
       }
-      const id = await submitQuote(data, quoteForm.endpoint, submissionKey.current)
+      const id = await submitQuote(data, quoteForm.endpoint, submissionKey.current, smsConsent)
       setRequestId(id)
       setStatus('sent')
       setData(emptyQuote)
+      setSmsConsent(false)
       setTouched({})
       submissionKey.current = newSubmissionKey()
     } catch (err) {
@@ -212,6 +215,31 @@ export function QuoteForm() {
         <Field field="phone" label="Phone number" error={errors.phone} required>
           <input type="tel" autoComplete="tel" inputMode="tel" {...fieldProps('phone')} />
         </Field>
+        <div className="sm:col-span-2">
+          <label htmlFor="quote-smsConsent" className="flex items-start gap-3 text-sm leading-relaxed text-steel">
+            <input
+              id="quote-smsConsent"
+              type="checkbox"
+              name="smsConsent"
+              checked={smsConsent}
+              onChange={(e) => setSmsConsent(e.target.checked)}
+              className="mt-1 h-4 w-4 shrink-0 accent-navy"
+            />
+            <span>
+              I agree to receive text messages from SDS UZ INC about quote follow-ups, shipment and delivery updates, and
+              customer support replies at the mobile number provided. Consent is not a condition of purchase. Message
+              frequency may vary. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our{' '}
+              <a href="/privacy" className="font-semibold text-navy underline underline-offset-4">
+                Privacy Policy
+              </a>{' '}
+              and{' '}
+              <a href="/sms-terms" className="font-semibold text-navy underline underline-offset-4">
+                SMS Terms
+              </a>
+              .
+            </span>
+          </label>
+        </div>
         <Field field="pickupLocation" label="Pickup city and state" error={errors.pickupLocation} required>
           <input type="text" placeholder="e.g. Dallas, TX" {...fieldProps('pickupLocation')} />
         </Field>

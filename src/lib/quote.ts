@@ -129,7 +129,7 @@ export function newSubmissionKey(): string {
 
 /**
  * Sends the quote request as JSON to the SDS bot server (POST /api/quote), which saves it and
- * notifies the team in Telegram. Resolves with the request ID (e.g. SDS-Q-2026-0001).
+ * notifies the team in Telegram; `smsConsent` is stored as proof of the opt-in. Resolves with the request ID (e.g. SDS-Q-2026-0001).
  * Throws QuoteNotConfiguredError when no endpoint is configured, so the UI can say plainly that
  * nothing was sent.
  */
@@ -137,6 +137,7 @@ export async function submitQuote(
   data: QuoteRequest,
   endpoint: string,
   submissionKey: string,
+  smsConsent: boolean,
   signal?: AbortSignal,
 ): Promise<string> {
   if (!endpoint) throw new QuoteNotConfiguredError('No quote endpoint configured')
@@ -144,7 +145,7 @@ export async function submitQuote(
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({ ...data, submissionKey, website: '' }),
+    body: JSON.stringify({ ...data, smsConsent, submissionKey, website: '' }),
     signal,
   })
   const body = (await response.json().catch(() => null)) as

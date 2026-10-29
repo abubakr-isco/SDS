@@ -11,8 +11,16 @@ import { TrustSection } from './components/TrustSection'
 
 export default function App() {
   // Honour deep links like /#quote: the browser's own hash jump runs before React has rendered the sections.
+  // Look the id up directly: a mangled hash (e.g. "#quote»" pasted from a message) is not a valid CSS
+  // selector, and a querySelector exception here would unmount the whole page.
   useEffect(() => {
-    const target = window.location.hash && document.querySelector(window.location.hash)
+    let id = window.location.hash.slice(1)
+    try {
+      id = decodeURIComponent(id)
+    } catch {
+      // Malformed percent-encoding: try the raw value.
+    }
+    const target = id && document.getElementById(id)
     if (target) target.scrollIntoView({ behavior: 'instant' })
   }, [])
 

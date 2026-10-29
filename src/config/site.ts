@@ -57,7 +57,7 @@ export type ResponsiveImage = {
 
 export const company = {
   name: 'SDS',
-  legalName: 'SDS UZ Inc.',
+  legalName: 'SDS UZ INC',
   tagline: 'Moving America Forward.',
   description:
     'SDS provides trucking and freight transportation for businesses that need freight moved safely, efficiently and on time.',

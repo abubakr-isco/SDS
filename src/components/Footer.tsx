@@ -4,8 +4,6 @@ import { ButtonLink } from './ui/Button'
 import { Logo } from './ui/Logo'
 
 const year = new Date().getFullYear()
-// Avoid a double period when the legal name ends with one ("Inc.").
-const owner = company.legalName.replace(/\.$/, '')
 
 export function Footer() {
   const social = socialLinks.filter((s) => s.href)
@@ -69,7 +67,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="container-x flex flex-col gap-4 py-6 text-sm text-steel-light sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {owner}. All rights reserved.
+            © {year} {company.legalName}. All rights reserved.
             {company.registration && <span className="ml-3">{company.registration}</span>}
           </p>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">

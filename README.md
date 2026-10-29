@@ -30,19 +30,24 @@ Almost everything company-specific lives in **`src/config/site.ts`**:
 | USDOT / MC numbers | `company.registration` |
 | Production domain | `company.siteUrl` — also update `index.html`, `public/robots.txt`, `public/sitemap.xml` |
 
-Legal pages are placeholders at `public/privacy.html` and `public/terms.html`.
+Legal pages: `public/privacy.html` (Privacy Policy), `public/sms-terms.html` (SMS Terms) and
+`public/terms.html` (Terms of Service, still a placeholder).
 
 ## Quote form
 
 The form validates input, has a honeypot field and a minimum fill-time check, and never writes to
 `localStorage`.
 
-- **No endpoint configured (default):** runs in demo mode and tells the visitor plainly that the request
+- **Nothing configured (default):** runs in demo mode and tells the visitor plainly that the request
   was **not** sent, with the phone/email to use instead.
-- **To go live:** copy `.env.example` to `.env` and set `VITE_QUOTE_ENDPOINT` to a URL that accepts a
-  JSON `POST` and returns 2xx on success (your own API, a serverless function, Formspree, Basin, etc.).
-  Payload: `fullName, companyName, email, phone, pickupLocation, deliveryLocation, pickupDate,
-  freightType, estimatedWeight, details, submittedAt, source`.
+- **Email via Web3Forms (current setup):** create an access key at https://web3forms.com for
+  `dispatch@sdsuzinc.com` and set `VITE_WEB3FORMS_ACCESS_KEY` (in `.env.local`, or in the host's
+  environment before building). Each request arrives as an email with a reference ID (`SDS-W-…`),
+  the visitor's email as reply-to, and the SMS consent record (yes/no, number, time, exact wording).
+- **SDS bot server:** set `VITE_QUOTE_ENDPOINT` to the bot's `/api/quote` URL instead
+  (see `sds-telegram-bot/`); requests are saved in its database and sent to admins in Telegram.
+
+Vite inlines these variables at build time: after changing them, rebuild/redeploy the site.
 
 Add server-side validation and rate limiting on whatever receives the request — client-side checks
 are not a security boundary.

@@ -251,18 +251,30 @@ export const freightTypes = [
 ] as const
 
 /**
- * Quote form delivery.
+ * Quote form delivery. The first one configured wins:
  *
- * Leave `endpoint` empty to run the form in demo mode: it validates the
- * request but clearly tells the visitor nothing was sent.
+ * 1. VITE_WEB3FORMS_ACCESS_KEY — the request is emailed to SDS through
+ *    Web3Forms (https://web3forms.com). The key is public by design; it only
+ *    lets a form send email to the address it was created for.
+ * 2. VITE_QUOTE_ENDPOINT — the SDS bot server's /api/quote URL
+ *    (e.g. https://bot.example.com/api/quote). The bot saves the request and
+ *    sends it to the SDS team in Telegram.
  *
- * To go live, set VITE_QUOTE_ENDPOINT to the SDS bot server's /api/quote URL
- * (e.g. https://bot.example.com/api/quote). The bot saves the request and
- * sends it to the SDS team in Telegram.
+ * With neither set, the form runs in demo mode: it validates the request but
+ * clearly tells the visitor nothing was sent.
  */
 export const quoteForm = {
+  web3formsKey: (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined) ?? '',
   endpoint: (import.meta.env.VITE_QUOTE_ENDPOINT as string | undefined) ?? '',
 }
+
+/**
+ * SMS opt-in wording shown next to the checkbox. The exact text is also emailed with
+ * each request as proof of what the customer agreed to — keep it in sync with
+ * public/sms-terms.html and the RingCentral campaign.
+ */
+export const smsConsentText =
+  'I agree to receive text messages from SDS UZ INC about quote follow-ups, shipment and delivery updates, and customer support replies at the mobile number provided. Consent is not a condition of purchase. Message frequency may vary. Message and data rates may apply. Reply STOP to opt out, HELP for help.'
 
 export const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },

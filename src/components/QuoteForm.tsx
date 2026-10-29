@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
-import { contact, freightTypes, quoteForm } from '../config/site'
+import { contact, freightTypes, quoteForm, smsConsentText } from '../config/site'
 import {
   QuoteFieldErrors,
   QuoteNotConfiguredError,
@@ -9,6 +9,7 @@ import {
   newSubmissionKey,
   requiredFields,
   submitQuote,
+  submitQuoteByEmail,
   todayISO,
   validateField,
   validateQuote,
@@ -82,11 +83,13 @@ export function QuoteForm() {
 
     setStatus('submitting')
     try {
-      if (!quoteForm.endpoint) {
+      if (!quoteForm.web3formsKey && !quoteForm.endpoint) {
         // Demo mode: show the loading state briefly, then say clearly that nothing was sent.
         await new Promise((r) => setTimeout(r, 700))
       }
-      const id = await submitQuote(data, quoteForm.endpoint, submissionKey.current, smsConsent)
+      const id = quoteForm.web3formsKey
+        ? await submitQuoteByEmail(data, quoteForm.web3formsKey, submissionKey.current, smsConsent)
+        : await submitQuote(data, quoteForm.endpoint, submissionKey.current, smsConsent)
       setRequestId(id)
       setStatus('sent')
       setData(emptyQuote)
@@ -226,9 +229,7 @@ export function QuoteForm() {
               className="mt-1 h-4 w-4 shrink-0 accent-navy"
             />
             <span>
-              I agree to receive text messages from SDS UZ INC about quote follow-ups, shipment and delivery updates, and
-              customer support replies at the mobile number provided. Consent is not a condition of purchase. Message
-              frequency may vary. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our{' '}
+              {smsConsentText} See our{' '}
               <a href="/privacy" className="font-semibold text-navy underline underline-offset-4">
                 Privacy Policy
               </a>{' '}

@@ -1,4 +1,4 @@
-import { freightTypes } from '../config/site'
+import { freightTypes, smsConsentText } from '../config/site'
 
 export type FreightType = (typeof freightTypes)[number]
 
@@ -160,4 +160,56 @@ export async function submitQuote(
   if (response.status === 429) throw new QuoteRateLimitedError('Too many requests')
   if (!response.ok || !body?.ok || !body.requestId) throw new Error(`Quote request failed with status ${response.status}`)
   return body.requestId
+}
+
+const WEB3FORMS_URL = 'https://api.web3forms.com/submit'
+
+/**
+ * Emails the quote request to SDS through Web3Forms and resolves with a reference ID
+ * (e.g. SDS-W-3F9A2C1B) that appears both on the confirmation screen and in the email.
+ * The email records whether the visitor gave SMS consent, for which number, when, and the
+ * exact wording shown, so the inbox doubles as the opt-in record.
+ */
+export async function submitQuoteByEmail(
+  data: QuoteRequest,
+  accessKey: string,
+  submissionKey: string,
+  smsConsent: boolean,
+  signal?: AbortSignal,
+): Promise<string> {
+  const requestId = `SDS-W-${submissionKey.replace(/-/g, '').slice(0, 8).toUpperCase()}`
+  const submittedAt = new Date().toISOString()
+
+  const response = await fetch(WEB3FORMS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      access_key: accessKey,
+      subject: `Quote request ${requestId}: ${data.pickupLocation} → ${data.deliveryLocation}`,
+      from_name: 'SDS website quote form',
+      email: data.email, // Web3Forms uses it as the reply-to address
+      'Request ID': requestId,
+      'Full name': data.fullName,
+      Company: data.companyName,
+      Phone: data.phone,
+      Pickup: data.pickupLocation,
+      Delivery: data.deliveryLocation,
+      'Pickup date': data.pickupDate,
+      'Freight type': data.freightType,
+      'Estimated weight (lbs)': data.estimatedWeight || 'Not provided',
+      'Shipment details': data.details || 'None provided',
+      'SMS consent': smsConsent
+        ? `YES for ${data.phone}, given ${submittedAt} (checkbox on the quote form)`
+        : 'NO, do not text this customer',
+      ...(smsConsent ? { 'SMS consent wording': smsConsentText } : {}),
+      'Submitted at (UTC)': submittedAt,
+      'Submitted from': window.location.href,
+    }),
+    signal,
+  })
+  const body = (await response.json().catch(() => null)) as { success?: boolean } | null
+
+  if (response.status === 429) throw new QuoteRateLimitedError('Too many requests')
+  if (!response.ok || !body?.success) throw new Error(`Web3Forms request failed with status ${response.status}`)
+  return requestId
 }

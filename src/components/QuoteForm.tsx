@@ -35,6 +35,8 @@ export function QuoteForm() {
   // Optional and unchecked by default: SMS consent is never a condition of a quote.
   const [smsConsent, setSmsConsent] = useState(false)
   const [requestId, setRequestId] = useState('')
+  // Set after mount: the page is prerendered at build time, when "today" was a different day.
+  const [minPickupDate, setMinPickupDate] = useState<string>()
   const startedAt = useRef(0)
   const submissionKey = useRef('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -43,6 +45,8 @@ export function QuoteForm() {
   useEffect(() => {
     startedAt.current = Date.now()
     submissionKey.current = newSubmissionKey()
+    // oxlint-disable-next-line react/set-state-in-effect -- must differ from the prerendered HTML only after hydration
+    setMinPickupDate(todayISO())
   }, [])
 
   useEffect(() => {
@@ -148,7 +152,7 @@ export function QuoteForm() {
           <div className="mt-4 max-w-md space-y-4 text-lg leading-relaxed text-steel">
             <p>
               This form is in demo mode: your details passed validation, but no email service or API is connected
-              yet, so nothing was delivered to SDS.
+              yet, so nothing was delivered to SDS UZ INC.
             </p>
             <p>
               To request a quote now, call{' '}
@@ -248,7 +252,7 @@ export function QuoteForm() {
           <input type="text" placeholder="e.g. Atlanta, GA" {...fieldProps('deliveryLocation')} />
         </Field>
         <Field field="pickupDate" label="Pickup date" error={errors.pickupDate} required>
-          <input type="date" min={todayISO()} {...fieldProps('pickupDate')} />
+          <input type="date" min={minPickupDate} {...fieldProps('pickupDate')} />
         </Field>
         <Field field="freightType" label="Freight type" error={errors.freightType} required>
           <select {...fieldProps('freightType')}>
@@ -296,7 +300,7 @@ export function QuoteForm() {
 
       <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xs text-sm leading-relaxed text-steel">
-          We use these details only to respond to your quote request.
+          We use these details only to respond to your quote request. We text you only if you check the box above.
         </p>
         <Button type="submit" variant="dark" size="lg" disabled={status === 'submitting'} aria-disabled={status === 'submitting'}>
           {status === 'submitting' ? (

@@ -1,12 +1,14 @@
-import { Clock, Mail, Phone, Route } from 'lucide-react'
+import { Building2, Clock, Mail, MapPin, Phone, Route } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { contact, cta, type ContactItem } from '../config/site'
 import { ButtonLink } from './ui/Button'
 import { SectionHeading } from './ui/SectionHeading'
 
 const rows: { item: ContactItem; icon: LucideIcon }[] = [
+  { item: contact.company, icon: Building2 },
   { item: contact.phone, icon: Phone },
   { item: contact.email, icon: Mail },
+  { item: contact.address, icon: MapPin },
   { item: contact.hours, icon: Clock },
   { item: contact.serviceArea, icon: Route },
 ]
@@ -34,7 +36,7 @@ export function ContactSection() {
 
         <div className="lg:col-span-6 lg:col-start-7">
           <dl className="border-t border-navy">
-            {rows.map(({ item, icon: Icon }) => (
+            {rows.filter(({ item }) => !item.placeholder).map(({ item, icon: Icon }) => (
               <div key={item.label} className="grid grid-cols-[auto_1fr] items-start gap-x-5 border-b border-rule py-5 sm:grid-cols-[auto_9rem_1fr] sm:py-6">
                 <Icon size={20} strokeWidth={1.75} aria-hidden="true" className="mt-0.5 text-orange-deep" />
                 <dt className="label text-steel sm:pt-1">{item.label}</dt>
@@ -46,7 +48,6 @@ export function ContactSection() {
                   ) : (
                     <span>{item.value}</span>
                   )}
-                  {item.placeholder && <PlaceholderTag />}
                 </dd>
               </div>
             ))}
@@ -54,16 +55,5 @@ export function ContactSection() {
         </div>
       </div>
     </section>
-  )
-}
-
-function PlaceholderTag() {
-  return (
-    <span
-      title="Replace with real company information in src/config/site.ts"
-      className="label border border-dashed border-steel/60 px-2 py-1 text-[0.625rem] text-steel"
-    >
-      Placeholder
-    </span>
   )
 }

@@ -1,6 +1,6 @@
 /**
  * ---------------------------------------------------------------
- *  SDS — central site configuration
+ *  SDS UZ INC — central site configuration
  * ---------------------------------------------------------------
  *  Every piece of company-specific content lives here so it can be
  *  edited without touching components.
@@ -56,18 +56,22 @@ export type ResponsiveImage = {
 }
 
 export const company = {
-  name: 'SDS',
   legalName: 'SDS UZ INC',
   tagline: 'Moving America Forward.',
   description:
-    'SDS provides trucking and freight transportation for businesses that need freight moved safely, efficiently and on time.',
-  /** Production URL — also update index.html, public/robots.txt and public/sitemap.xml */
-  siteUrl: 'https://sdsuz-inc.onrender.com',
+    'SDS UZ INC provides trucking and freight transportation for businesses that need freight moved safely, efficiently and on time.',
+  /** Production URL — also update index.html, public/robots.txt, public/sitemap.xml and the public/*.html pages */
+  siteUrl: 'https://sdsuz-inc.com',
   /** e.g. 'USDOT 0000000 · MC 000000' — leave empty until verified */
   registration: '',
 }
 
-export const contact: Record<'phone' | 'email' | 'hours' | 'serviceArea', ContactItem> = {
+export const contact: Record<'company' | 'phone' | 'email' | 'address' | 'hours' | 'serviceArea', ContactItem> = {
+  company: {
+    label: 'Company',
+    value: 'SDS UZ INC',
+    placeholder: false,
+  },
   phone: {
     label: 'Phone',
     value: '(215) 268-3886',
@@ -80,6 +84,12 @@ export const contact: Record<'phone' | 'email' | 'hours' | 'serviceArea', Contac
     href: 'mailto:dispatch@sdsuzinc.com',
     placeholder: false,
   },
+  address: {
+    label: 'Address',
+    value: '133 Carters Mill RD, Feasterville Trevose, PA 19053',
+    placeholder: false,
+  },
+  // Placeholder items are not shown on the site until real values are supplied.
   hours: {
     label: 'Hours',
     value: '[Operating hours, e.g. Mon–Fri, 7:00 AM – 6:00 PM CT]',
@@ -100,12 +110,13 @@ export const socialLinks: { label: string; href: string }[] = [
   // { label: 'LinkedIn', href: 'https://www.linkedin.com/company/...' },
 ]
 
+/** Dropping the first character of an href gives the homepage section that highlights the item. */
 export const navigation = [
   { label: 'Home', href: '#top' },
-  { label: 'About Us', href: '#about' },
+  { label: 'About Us', href: '/about' },
   { label: 'Services', href: '#services' },
   { label: 'Our Fleet', href: '#fleet' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
 ] as const
 
 export const cta = {
@@ -278,8 +289,8 @@ export const smsConsentText =
 
 export const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'SMS Terms', href: '/sms-terms' },
-  { label: 'Terms of Service', href: '/terms.html' },
+  { label: 'SMS Terms & Conditions', href: '/sms-terms' },
+  { label: 'Terms & Conditions', href: '/terms' },
 ]
 
 export function srcSet(img: ResponsiveImage) {

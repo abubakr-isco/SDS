@@ -13,7 +13,7 @@ export function Footer() {
       <div className="container-x py-16 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <a href="#top" className="inline-block" aria-label="SDS UZ — back to top">
+            <a href="#top" className="inline-block" aria-label="SDS UZ INC — back to top">
               <Logo className="h-20" />
             </a>
             <p className="mt-6 max-w-sm leading-relaxed text-steel-light">{company.description}</p>
@@ -53,6 +53,7 @@ export function Footer() {
                 {contact.email.value}
               </a>
             </li>
+            <li className="text-steel-light">{contact.address.value}</li>
             {social.map((s) => (
               <li key={s.href}>
                 <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-steel-light hover:text-white">
@@ -66,7 +67,8 @@ export function Footer() {
 
       <div className="border-t border-line">
         <div className="container-x flex flex-col gap-4 py-6 text-sm text-steel-light sm:flex-row sm:items-center sm:justify-between">
-          <p>
+          {/* The prerendered year can lag behind the visitor's clock until the next deploy. */}
+          <p suppressHydrationWarning>
             © {year} {company.legalName}. All rights reserved.
             {company.registration && <span className="ml-3">{company.registration}</span>}
           </p>

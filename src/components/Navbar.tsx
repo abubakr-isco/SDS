@@ -74,7 +74,7 @@ export function Navbar() {
       </a>
 
       <div className="container-x flex h-16 items-center justify-between gap-6 lg:h-20">
-        <a href="#top" className="-my-2 shrink-0" aria-label="SDS UZ — back to top" onClick={() => close()}>
+        <a href="#top" className="-my-2 shrink-0" aria-label="SDS UZ INC — back to top" onClick={() => close()}>
           <Logo className="h-12 lg:h-[60px]" />
         </a>
 

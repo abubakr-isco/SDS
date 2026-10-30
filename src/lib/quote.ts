@@ -186,7 +186,7 @@ export async function submitQuoteByEmail(
     body: JSON.stringify({
       access_key: accessKey,
       subject: `Quote request ${requestId}: ${data.pickupLocation} → ${data.deliveryLocation}`,
-      from_name: 'SDS website quote form',
+      from_name: 'SDS UZ INC website quote form',
       email: data.email, // Web3Forms uses it as the reply-to address
       'Request ID': requestId,
       'Full name': data.fullName,

@@ -28,7 +28,7 @@ export function AboutSection() {
           <SectionHeading id="about-title" title="Driven by purpose. Built on trust." />
           <div className="reveal mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-steel">
             <p>
-              At SDS, we believe transportation is about more than moving freight. It’s about helping businesses stay
+              At SDS UZ INC, we believe transportation is about more than moving freight. It’s about helping businesses stay
               connected, meet their commitments, and keep moving forward.
             </p>
             <p>
@@ -36,9 +36,12 @@ export function AboutSection() {
               practical approach to transportation.
             </p>
           </div>
-          <div className="reveal mt-10">
+          <div className="reveal mt-10 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="#approach" variant="dark" size="lg">
               Our approach
+            </ButtonLink>
+            <ButtonLink href="/about" variant="outline-dark" size="lg">
+              About SDS UZ INC
             </ButtonLink>
           </div>
         </div>

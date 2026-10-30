@@ -34,7 +34,7 @@ export function HeroSection() {
         <div className="max-w-3xl">
           <p className="label hero-fade flex items-center gap-3 text-white/85" style={delay(100)}>
             <span aria-hidden="true" className="lane-h block h-[3px] w-10" />
-            American trucking &amp; logistics
+            SDS UZ INC · Trucking &amp; freight
           </p>
 
           <h1

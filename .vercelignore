@@ -1,0 +1,13 @@
+# Local env files: production values are set in the Vercel project
+.env
+*.local
+
+# Not part of the website
+sds-telegram-bot
+render.yaml
+dist
+node_modules
+
+# Original photos and screenshots in the project root (processed copies live in public/images)
+/*.png
+/*.jpg

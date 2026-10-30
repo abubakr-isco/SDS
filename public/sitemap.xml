@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Production domain: also set in index.html, robots.txt and src/config/site.ts. -->
+<!-- Production domain: also set in index.html, robots.txt, src/config/site.ts and the public/*.html pages. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://sdsuz-inc.onrender.com/</loc></url>
-  <url><loc>https://sdsuz-inc.onrender.com/privacy</loc></url>
-  <url><loc>https://sdsuz-inc.onrender.com/sms-terms</loc></url>
-  <url><loc>https://sdsuz-inc.onrender.com/terms.html</loc></url>
+  <url><loc>https://sdsuz-inc.com/</loc></url>
+  <url><loc>https://sdsuz-inc.com/about</loc></url>
+  <url><loc>https://sdsuz-inc.com/contact</loc></url>
+  <url><loc>https://sdsuz-inc.com/privacy</loc></url>
+  <url><loc>https://sdsuz-inc.com/terms</loc></url>
+  <url><loc>https://sdsuz-inc.com/sms-terms</loc></url>
 </urlset>

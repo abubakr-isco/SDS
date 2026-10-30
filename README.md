@@ -1,16 +1,19 @@
-# SDS — Trucking & Freight Website
+# SDS UZ INC — Trucking & Freight Website
 
-Single-page marketing site for SDS, an American trucking and freight transportation company.
+Marketing site for SDS UZ INC, an American trucking and freight transportation company.
 
 **Stack:** React 19 · TypeScript · Vite 8 · Tailwind CSS 4 · lucide-react icons. No backend.
+
+The homepage is a React app, prerendered into `dist/index.html` at build time (`scripts/prerender.mjs`) so its
+content is in the HTML for crawlers and brand reviewers. The other pages are plain HTML in `public/`.
 
 ## Commands
 
 ```bash
 npm install        # install dependencies
-npm run dev        # dev server at http://localhost:5173
-npm run build      # type-check + production build to dist/
-npm run preview    # serve the production build locally
+npm run dev        # dev server at http://localhost:5180
+npm run build      # type-check + production build to dist/, with the homepage prerendered
+npm run preview    # serve the production build at http://localhost:5181
 npm run lint       # oxlint
 ```
 
@@ -20,7 +23,7 @@ Almost everything company-specific lives in **`src/config/site.ts`**:
 
 | What | Key |
 | --- | --- |
-| Phone, email, hours, service area | `contact` (set `placeholder: false` once real) |
+| Phone, email, address, hours, service area | `contact` (hidden on the site until `placeholder: false`) |
 | Services (proposed — confirm or remove) | `services` (`confirmed` flag) |
 | Fleet / equipment categories | `fleet` (`confirmed` flag) |
 | Value propositions | `values` |
@@ -28,10 +31,11 @@ Almost everything company-specific lives in **`src/config/site.ts`**:
 | Freight type options in the quote form | `freightTypes` |
 | Social profiles (only real ones) | `socialLinks` |
 | USDOT / MC numbers | `company.registration` |
-| Production domain | `company.siteUrl` — also update `index.html`, `public/robots.txt`, `public/sitemap.xml` |
+| Production domain | `company.siteUrl` — also update `index.html`, `public/robots.txt`, `public/sitemap.xml` and the `public/*.html` pages |
 
-Legal pages: `public/privacy.html` (Privacy Policy), `public/sms-terms.html` (SMS Terms) and
-`public/terms.html` (Terms of Service, still a placeholder).
+Static pages in `public/`: `about.html`, `contact.html`, `privacy.html`, `terms.html`, `sms-terms.html` and `404.html`
+(shared styles in `site.css`). Company details are repeated in them, so change them there too when they change in
+`src/config/site.ts`. Keep the SMS consent wording in `sms-terms.html` identical to `smsConsentText`.
 
 ## Quote form
 
@@ -60,6 +64,5 @@ Replace stock photos with SDS's own fleet photography when available.
 
 ## Deploying
 
-`npm run build` outputs a static site in `dist/` that can be hosted on any static host
-(Netlify, Vercel, Cloudflare Pages, S3 + CloudFront, etc.). No hosting platform is configured in this
-repository yet.
+The site runs on Vercel (project `sds-uz-inc`, domain `sdsuz-inc.com`), configured in `vercel.json`. Deploy from this
+folder with `npx vercel deploy --prod`. `VITE_WEB3FORMS_ACCESS_KEY` is set in the Vercel project's environment.

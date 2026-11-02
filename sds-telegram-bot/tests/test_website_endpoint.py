@@ -124,17 +124,52 @@ async def test_optional_fields_can_be_empty(client, ctx):
     assert request.estimated_weight_lb is None and request.shipment_details is None
 
 
-async def test_sms_consent_is_recorded_with_time_and_number(client, ctx, bot):
-    response = await post(client, {"smsConsent": True})
+CONSENT_TEXT = (
+    "By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, "
+    "shipment updates, delivery notifications, and customer support.\n\nMessage frequency may vary."
+)
+CONSENT = {"smsConsentVersion": "2026-11-02.2", "smsConsentText": CONSENT_TEXT}
+
+
+async def test_sms_consent_is_recorded_with_time_number_version_and_text(client, ctx, bot):
+    response = await post(client, {"smsConsent": True, **CONSENT})
     assert response.status == 201
     async with ctx.session_factory() as session:
         request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent is True
     assert request.sms_consent_at is not None
     assert request.sms_consent_phone == "+12155550144"
+    assert request.sms_consent_source == "website_quote_form"
+    assert request.sms_consent_version == "2026-11-02.2"
+    assert request.sms_consent_text == CONSENT_TEXT
 
     await ctx.drain()
     [notification] = sent_to(bot.mock.requests, ADMIN_ID)
     assert "SMS consent:</b> Yes, for +12155550144" in notification.text
+    assert "(wording 2026-11-02.2)" in notification.text
+
+
+async def test_no_consent_still_records_the_wording_shown(client, ctx, bot):
+    assert (await post(client, {"smsConsent": False, **CONSENT})).status == 201
+    async with ctx.session_factory() as session:
+        request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent is False
+    assert request.sms_consent_at is None and request.sms_consent_phone is None
+    assert request.sms_consent_source == "website_quote_form"
+    assert (request.sms_consent_version, request.sms_consent_text) == ("2026-11-02.2", CONSENT_TEXT)
+
+    await ctx.drain()
+    [notification] = sent_to(bot.mock.requests, ADMIN_ID)
+    assert "SMS consent:</b> No — do not text this customer (wording 2026-11-02.2)" in notification.text
+
+
+async def test_consent_source_comes_from_the_server_and_bad_wording_fields_are_dropped(client, ctx):
+    payload = {"smsConsentSource": "imported_list", "smsConsentVersion": 7, "smsConsentText": "x" * 2001}
+    assert (await post(client, payload)).status == 201
+    async with ctx.session_factory() as session:
+        request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent_source == "website_quote_form"
+    assert request.sms_consent_version is None and request.sms_consent_text is None
 
 
 @pytest.mark.parametrize("value", [None, False, "true", 1])
@@ -143,6 +178,7 @@ async def test_anything_but_true_is_no_sms_consent(client, ctx, bot, value):
     assert (await post(client, payload)).status == 201
     async with ctx.session_factory() as session:
         request = await session.scalar(select(QuoteRequest))
+    assert request.sms_consent is False
     assert request.sms_consent_at is None and request.sms_consent_phone is None
 
     await ctx.drain()

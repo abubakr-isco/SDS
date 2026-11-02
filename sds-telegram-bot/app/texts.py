@@ -342,9 +342,10 @@ WEBSITE_CUSTOMER_NOTE = (
 
 
 def sms_consent_label(request: QuoteRequest, tz: ZoneInfo) -> str:
-    if request.sms_consent_at is None:
-        return "No — do not text this customer"
-    return f"Yes, for {esc(request.sms_consent_phone)} on {fmt_datetime(request.sms_consent_at, tz)}"
+    version = f" (wording {esc(request.sms_consent_version)})" if request.sms_consent_version else ""
+    if not request.sms_consent or request.sms_consent_at is None:
+        return f"No — do not text this customer{version}"
+    return f"Yes, for {esc(request.sms_consent_phone)} on {fmt_datetime(request.sms_consent_at, tz)}{version}"
 
 
 def source_label(request: QuoteRequest) -> str:

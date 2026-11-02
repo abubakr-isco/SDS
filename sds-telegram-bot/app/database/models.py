@@ -16,6 +16,7 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    false,
     func,
     true,
 )
@@ -165,9 +166,15 @@ class QuoteRequest(TimestampMixin, Base):
     freight_type: Mapped[str] = mapped_column(String(40), nullable=False)
     estimated_weight_lb: Mapped[int | None] = mapped_column(Integer)
     shipment_details: Mapped[str | None] = mapped_column(Text)
-    # Proof of SMS opt-in from the website form: when it was given and for which number. NULL = no consent.
+    # SMS opt-in record from the website form. sms_consent is True only if the visitor checked the box;
+    # sms_consent_at / sms_consent_phone are set only then (server time, E.164 number). The source, version
+    # and exact wording shown are kept for every website request, so a "no" is as provable as a "yes".
+    sms_consent: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default=false())
     sms_consent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     sms_consent_phone: Mapped[str | None] = mapped_column(String(20))
+    sms_consent_source: Mapped[str | None] = mapped_column(String(40))
+    sms_consent_version: Mapped[str | None] = mapped_column(String(32))
+    sms_consent_text: Mapped[str | None] = mapped_column(Text)
     status: Mapped[QuoteStatus] = mapped_column(
         _enum(QuoteStatus, "quote_status"),
         nullable=False,

@@ -1,4 +1,4 @@
-import { freightTypes, smsConsentText, smsConsentVersion } from '../config/site'
+import { freightTypes, smsConsentSource, smsConsentText, smsConsentVersion } from '../config/site'
 
 export type FreightType = (typeof freightTypes)[number]
 
@@ -77,7 +77,10 @@ export type SmsConsentRecord = {
   phone: string
   /** When the box was checked and the form submitted (UTC, ISO 8601); null without consent. */
   consentedAt: string | null
+  /** Always "website_quote_form" for this form. */
   source: string
+  /** Page the form was on when it was submitted. */
+  page: string
   /** Wording shown next to the checkbox, whether or not it was checked. */
   consentText: string
   consentVersion: string
@@ -97,7 +100,8 @@ export function buildConsentRecord(
     smsConsent: consented,
     phone: toE164(phone) ?? phone.trim(),
     consentedAt: consented ? submittedAt : null,
-    source: `Website quote form (${pageUrl})`,
+    source: smsConsentSource,
+    page: pageUrl,
     consentText: smsConsentText,
     consentVersion: smsConsentVersion,
     submissionId,
@@ -197,7 +201,7 @@ export function newSubmissionKey(): string {
 
 /**
  * Sends the quote request as JSON to the SDS bot server (POST /api/quote), which saves it and
- * notifies the team in Telegram; `smsConsent` is stored as proof of the opt-in. Resolves with the request ID (e.g. SDS-Q-2026-0001).
+ * notifies the team in Telegram; the consent fields are stored as proof of the opt-in (or its absence). Resolves with the request ID (e.g. SDS-Q-2026-0001).
  * Throws QuoteNotConfiguredError when no endpoint is configured, so the UI can say plainly that
  * nothing was sent.
  */
@@ -219,6 +223,7 @@ export async function submitQuote(
       smsConsent: consent.smsConsent,
       smsConsentAt: consent.consentedAt,
       smsConsentSource: consent.source,
+      smsConsentPage: consent.page,
       smsConsentText: consent.consentText,
       smsConsentVersion: consent.consentVersion,
       submissionKey,
@@ -264,7 +269,7 @@ export async function submitQuoteByEmail(
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({
       access_key: accessKey,
-      subject: `Quote request ${requestId}: ${data.pickupLocation} → ${data.deliveryLocation}`,
+      subject: `Quote request ${requestId} (SMS consent: ${consent.smsConsent ? 'yes' : 'no'}): ${data.pickupLocation} → ${data.deliveryLocation}`,
       from_name: 'SDS UZ INC website quote form',
       email: data.email, // Web3Forms uses it as the reply-to address
       'Request ID': requestId,
@@ -277,15 +282,18 @@ export async function submitQuoteByEmail(
       'Freight type': data.freightType,
       'Estimated weight (lbs)': data.estimatedWeight || 'Not provided',
       'Shipment details': data.details || 'None provided',
-      'SMS consent': consent.smsConsent
-        ? 'TRUE: the customer checked the SMS consent box'
-        : 'FALSE: the box was left unchecked. Do not text this customer.',
-      'SMS consent phone': consent.phone,
-      'SMS consent timestamp (UTC)': consent.consentedAt ?? 'None (no consent given)',
-      'SMS consent source': consent.source,
-      'SMS consent version': consent.consentVersion,
-      'SMS consent text shown': consent.consentText,
-      'Form submission ID': consent.submissionId,
+      // Consent record: the same snake_case names on every email so the inbox can be searched and exported.
+      sms_consent: String(consent.smsConsent),
+      sms_consent_note: consent.smsConsent
+        ? 'The customer checked the SMS consent box.'
+        : 'The SMS box was left unchecked. Do not text this customer.',
+      consent_phone: consent.phone,
+      consent_timestamp: consent.consentedAt ?? 'none (no consent given)',
+      consent_source: consent.source,
+      consent_page: consent.page,
+      consent_version: consent.consentVersion,
+      consent_text: consent.consentText,
+      submission_id: consent.submissionId,
       'Submitted at (UTC)': submittedAt,
     }),
     signal,

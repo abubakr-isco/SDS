@@ -42,6 +42,10 @@ class QuoteDraft(BaseModel):
     requested_service: str | None = Field(default=None, max_length=60)
     # Website form only: the visitor checked the SMS consent box for `phone`.
     sms_consent: bool = False
+    # Website form only: where consent was asked, which wording version, and the exact text shown.
+    sms_consent_source: str | None = Field(default=None, max_length=40)
+    sms_consent_version: str | None = Field(default=None, max_length=32)
+    sms_consent_text: str | None = Field(default=None, max_length=2000)
 
 
 class QuoteRateLimited(Exception):
@@ -163,8 +167,12 @@ class QuoteService:
                 freight_type=draft.freight_type,
                 estimated_weight_lb=draft.estimated_weight_lb,
                 shipment_details=draft.shipment_details,
+                sms_consent=draft.sms_consent,
                 sms_consent_at=now if draft.sms_consent else None,
                 sms_consent_phone=draft.phone if draft.sms_consent else None,
+                sms_consent_source=draft.sms_consent_source,
+                sms_consent_version=draft.sms_consent_version,
+                sms_consent_text=draft.sms_consent_text,
                 status=QuoteStatus.NEW,
             )
             session.add(request)

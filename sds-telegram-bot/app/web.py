@@ -83,6 +83,17 @@ def _field(payload: dict[str, Any], name: str) -> str:
     return value.strip()
 
 
+WEBSITE_CONSENT_SOURCE = "website_quote_form"
+
+
+def _optional_text(payload: dict[str, Any], name: str, max_length: int) -> str | None:
+    value = payload.get(name)
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    return value if value and len(value) <= max_length else None
+
+
 def validate_website_payload(payload: dict[str, Any], ctx: AppContext) -> tuple[dict[str, str], QuoteDraft | None]:
     """Server-side validation of the website form. Keys of the error dict are the form's field names."""
     errors: dict[str, str] = {}
@@ -129,6 +140,11 @@ def validate_website_payload(payload: dict[str, Any], ctx: AppContext) -> tuple[
     check("details", lambda v: {"shipment_details": parse_details(v)}, required=False, missing="")
     # Only an explicit JSON true counts as consent; anything else is treated as no consent.
     values["sms_consent"] = payload.get("smsConsent") is True
+    # The source is set here, not taken from the browser: this endpoint only serves the website form.
+    values["sms_consent_source"] = WEBSITE_CONSENT_SOURCE
+    # Wording version and text the browser showed. Kept as sent; unusable values are dropped, never fatal.
+    values["sms_consent_version"] = _optional_text(payload, "smsConsentVersion", 32)
+    values["sms_consent_text"] = _optional_text(payload, "smsConsentText", 2000)
 
     if errors:
         return errors, None

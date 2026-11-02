@@ -280,9 +280,9 @@ export const quoteForm = {
 }
 
 /**
- * SMS opt-in wording shown next to the checkbox, one entry per paragraph. The last paragraph
- * names the two pages the form links to. The exact text and its version are recorded with every
- * request as proof of what the customer saw. Keep it in sync with public/sms-terms.html and the
+ * SMS opt-in wording shown next to the checkbox: the paragraphs, then the two policy links with
+ * their full URLs. The exact text and its version are recorded with every request as proof of
+ * what the customer saw. Keep it in sync with public/sms-terms.html, public/privacy.html and the
  * RingCentral campaign, and change `smsConsentVersion` whenever the wording changes.
  */
 export const smsConsentParagraphs = [
@@ -290,13 +290,27 @@ export const smsConsentParagraphs = [
   'Message frequency may vary. Message and data rates may apply.',
   'Reply STOP to unsubscribe. Reply HELP for assistance.',
   'Consent is not a condition of purchase.',
-  'See our Privacy Policy and SMS Terms & Conditions.',
 ] as const
 
-export const smsConsentText = smsConsentParagraphs.join('\n\n')
+export const smsConsentLinks = [
+  { label: 'Privacy Policy', href: 'https://sdsuz-inc.com/privacy' },
+  { label: 'SMS Terms', href: 'https://sdsuz-inc.com/sms-terms' },
+] as const
 
-/** Date the current consent wording went live. Change it whenever `smsConsentParagraphs` changes. */
-export const smsConsentVersion = '2026-11-02'
+export const smsConsentText = [
+  ...smsConsentParagraphs,
+  smsConsentLinks.map((l) => `${l.label}: ${l.href}`).join('\n'),
+].join('\n\n')
+
+/**
+ * Date the wording went live, plus a revision number for a second change on the same day.
+ * History: 2026-11-02 ("See our Privacy Policy and SMS Terms & Conditions."),
+ * 2026-11-02.2 (policy links written out as full URLs).
+ */
+export const smsConsentVersion = '2026-11-02.2'
+
+/** Machine-readable consent source recorded with each request. */
+export const smsConsentSource = 'website_quote_form'
 
 export const smsProgramName = 'SDS UZ INC SMS Notifications'
 

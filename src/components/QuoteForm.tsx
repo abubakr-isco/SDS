@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
-import { contact, freightTypes, quoteForm, smsConsentParagraphs } from '../config/site'
+import { contact, freightTypes, quoteForm, smsConsentLinks, smsConsentParagraphs } from '../config/site'
 import {
   QuoteFieldErrors,
   QuoteNotConfiguredError,
@@ -245,20 +245,19 @@ export function QuoteForm() {
                 {smsConsentParagraphs[0]}
               </label>
               <div id="quote-smsConsent-details" className="mt-2 space-y-2">
-                {smsConsentParagraphs.slice(1, -1).map((p) => (
+                {smsConsentParagraphs.slice(1).map((p) => (
                   <p key={p}>{p}</p>
                 ))}
-                <p>
-                  See our{' '}
-                  <a href="/privacy" target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
-                    Privacy Policy
-                  </a>{' '}
-                  and{' '}
-                  <a href="/sms-terms" target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
-                    SMS Terms &amp; Conditions
-                  </a>
-                  .
-                </p>
+                <ul className="pt-1">
+                  {smsConsentLinks.map((l) => (
+                    <li key={l.href} className="break-words">
+                      {l.label}:{' '}
+                      <a href={l.href} target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
+                        {l.href}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

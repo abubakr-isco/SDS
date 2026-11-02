@@ -35,7 +35,7 @@ Almost everything company-specific lives in **`src/config/site.ts`**:
 
 Static pages in `public/`: `about.html`, `contact.html`, `privacy.html`, `terms.html`, `sms-terms.html` and `404.html`
 (shared styles in `site.css`). Company details are repeated in them, so change them there too when they change in
-`src/config/site.ts`. Keep the SMS consent wording in `sms-terms.html` identical to `smsConsentText`.
+`src/config/site.ts`. Keep the SMS consent wording in `sms-terms.html` identical to `smsConsentParagraphs`, and change `smsConsentVersion` whenever the wording changes.
 
 ## Quote form
 
@@ -47,7 +47,7 @@ The form validates input, has a honeypot field and a minimum fill-time check, an
 - **Email via Web3Forms (current setup):** create an access key at https://web3forms.com for
   `dispatch@sdsuzinc.com` and set `VITE_WEB3FORMS_ACCESS_KEY` (in `.env.local`, or in the host's
   environment before building). Each request arrives as an email with a reference ID (`SDS-W-…`),
-  the visitor's email as reply-to, and the SMS consent record (yes/no, number, time, exact wording).
+  the visitor's email as reply-to, and the SMS consent record (true/false, number in E.164, UTC time, source, exact wording and its version, submission ID).
 - **SDS bot server:** set `VITE_QUOTE_ENDPOINT` to the bot's `/api/quote` URL instead
   (see `sds-telegram-bot/`); requests are saved in its database and sent to admins in Telegram.
 

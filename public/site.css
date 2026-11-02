@@ -56,6 +56,8 @@ main.content { padding: 56px 0 88px; }
 .prose ul { padding-left: 22px; }
 .prose li + li { margin-top: 6px; }
 .prose blockquote { margin: 16px 0; padding: 16px 20px; background: var(--mist); border-left: 4px solid var(--orange); }
+.prose blockquote p { margin: 0; }
+.prose blockquote p + p { margin-top: 10px; }
 
 .two-col { display: grid; gap: 40px 64px; }
 .two-col img { display: block; width: 100%; height: auto; }

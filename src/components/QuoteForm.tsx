@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
-import { contact, freightTypes, quoteForm, smsConsentText } from '../config/site'
+import { contact, freightTypes, quoteForm, smsConsentParagraphs } from '../config/site'
 import {
   QuoteFieldErrors,
   QuoteNotConfiguredError,
@@ -220,31 +220,49 @@ export function QuoteForm() {
           <input type="email" autoComplete="email" inputMode="email" {...fieldProps('email')} />
         </Field>
         <Field field="phone" label="Phone number" error={errors.phone} required>
-          <input type="tel" autoComplete="tel" inputMode="tel" {...fieldProps('phone')} />
+          <input type="tel" autoComplete="tel" inputMode="tel" placeholder="e.g. (215) 555-0123" {...fieldProps('phone')} />
         </Field>
-        <div className="sm:col-span-2">
-          <label htmlFor="quote-smsConsent" className="flex items-start gap-3 text-sm leading-relaxed text-steel">
+        {/* SMS opt-in: separate from everything else, optional, and unchecked until the visitor checks it. */}
+        <fieldset className="border border-rule bg-mist p-4 sm:col-span-2 sm:p-5">
+          <legend className="sr-only">Text message updates (optional)</legend>
+          <p aria-hidden="true" className="mb-3 flex items-baseline justify-between gap-2 text-sm font-semibold text-navy">
+            Text message updates
+            <span className="text-xs font-normal text-steel">Optional</span>
+          </p>
+          <div className="flex items-start gap-3">
             <input
               id="quote-smsConsent"
               type="checkbox"
               name="smsConsent"
+              value="yes"
               checked={smsConsent}
               onChange={(e) => setSmsConsent(e.target.checked)}
-              className="mt-1 h-4 w-4 shrink-0 accent-navy"
+              aria-describedby="quote-smsConsent-details"
+              className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-navy"
             />
-            <span>
-              {smsConsentText} See our{' '}
-              <a href="/privacy" className="font-semibold text-navy underline underline-offset-4">
-                Privacy Policy
-              </a>{' '}
-              and{' '}
-              <a href="/sms-terms" className="font-semibold text-navy underline underline-offset-4">
-                SMS Terms
-              </a>
-              .
-            </span>
-          </label>
-        </div>
+            <div className="text-sm leading-relaxed text-steel">
+              <label htmlFor="quote-smsConsent" className="cursor-pointer text-navy">
+                {smsConsentParagraphs[0]}
+              </label>
+              <div id="quote-smsConsent-details" className="mt-2 space-y-2">
+                {smsConsentParagraphs.slice(1, -1).map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+                <p>
+                  See our{' '}
+                  <a href="/privacy" target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
+                    Privacy Policy
+                  </a>{' '}
+                  and{' '}
+                  <a href="/sms-terms" target="_blank" rel="noopener" className="font-semibold text-navy underline underline-offset-4">
+                    SMS Terms &amp; Conditions
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+        </fieldset>
         <Field field="pickupLocation" label="Pickup city and state" error={errors.pickupLocation} required>
           <input type="text" placeholder="e.g. Dallas, TX" {...fieldProps('pickupLocation')} />
         </Field>

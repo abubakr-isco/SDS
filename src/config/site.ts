@@ -280,12 +280,25 @@ export const quoteForm = {
 }
 
 /**
- * SMS opt-in wording shown next to the checkbox. The exact text is also emailed with
- * each request as proof of what the customer agreed to — keep it in sync with
- * public/sms-terms.html and the RingCentral campaign.
+ * SMS opt-in wording shown next to the checkbox, one entry per paragraph. The last paragraph
+ * names the two pages the form links to. The exact text and its version are recorded with every
+ * request as proof of what the customer saw. Keep it in sync with public/sms-terms.html and the
+ * RingCentral campaign, and change `smsConsentVersion` whenever the wording changes.
  */
-export const smsConsentText =
-  'I agree to receive text messages from SDS UZ INC about quote follow-ups, shipment and delivery updates, and customer support replies at the mobile number provided. Consent is not a condition of purchase. Message frequency may vary. Message and data rates may apply. Reply STOP to opt out, HELP for help.'
+export const smsConsentParagraphs = [
+  'By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, shipment updates, delivery notifications, and customer support.',
+  'Message frequency may vary. Message and data rates may apply.',
+  'Reply STOP to unsubscribe. Reply HELP for assistance.',
+  'Consent is not a condition of purchase.',
+  'See our Privacy Policy and SMS Terms & Conditions.',
+] as const
+
+export const smsConsentText = smsConsentParagraphs.join('\n\n')
+
+/** Date the current consent wording went live. Change it whenever `smsConsentParagraphs` changes. */
+export const smsConsentVersion = '2026-11-02'
+
+export const smsProgramName = 'SDS UZ INC SMS Notifications'
 
 export const legalLinks = [
   { label: 'Privacy Policy', href: '/privacy' },

@@ -11,3 +11,6 @@ node_modules
 # Original photos and screenshots in the project root (processed copies live in public/images)
 /*.png
 /*.jpg
+
+# SMS opt-in evidence for RingCentral; not part of the website
+SMS-COMPLIANCE-EVIDENCE

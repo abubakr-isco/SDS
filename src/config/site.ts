@@ -286,7 +286,8 @@ export const quoteForm = {
  * RingCentral campaign, and change `smsConsentVersion` whenever the wording changes.
  */
 export const smsConsentParagraphs = [
-  'By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.',
+  'By checking this box, I expressly consent to receive conversational SMS messages from SDS UZ INC for two-way communication regarding freight quote inquiries, load availability, load details, pickup and delivery coordination, shipment status discussions, and dispatch-related customer support.',
+  'These messages may include responses to my inquiries and ongoing conversations with SDS UZ INC.',
   'Message frequency may vary. Message and data rates may apply. Reply STOP to opt out. Reply HELP for assistance.',
   'Consent is not a condition of purchase.',
 ] as const
@@ -304,9 +305,10 @@ export const smsConsentText = [...smsConsentParagraphs, ...smsConsentLinks.map((
  * Date the wording went live, plus a revision number for a second change on the same day.
  * History: 2026-11-02 ("See our Privacy Policy and SMS Terms & Conditions."),
  * 2026-11-02.2 (policy links written out as full URLs),
- * 2026-11-04 (message types matching the RingCentral "Conversations (external)" use case).
+ * 2026-11-04 (message types matching the RingCentral "Conversations (external)" use case),
+ * 2026-11-04.2 (messages described as conversational, two-way SMS).
  */
-export const smsConsentVersion = '2026-11-04'
+export const smsConsentVersion = '2026-11-04.2'
 
 /** Machine-readable consent source recorded with each request. */
 export const smsConsentSource = 'website_quote_form'

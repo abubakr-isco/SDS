@@ -9,7 +9,7 @@ End users opt in directly through the SDS UZ INC website at https://sdsuz-inc.co
 
 Customers complete the Request a Freight Quote form and enter their mobile phone number. An optional, unchecked-by-default SMS consent checkbox is displayed with the complete SMS disclosure.
 
-Customers must manually check the box to consent to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.
+Customers must manually check the box to consent to receive conversational SMS messages from SDS UZ INC for two-way communication regarding freight quote inquiries, load availability, load details, pickup and delivery coordination, shipment status discussions, and dispatch-related customer support. These messages include responses to customer inquiries and ongoing conversations with SDS UZ INC.
 
 The consent checkbox is optional. Customers can submit a quote request without consenting to receive SMS messages. Providing a phone number alone does not constitute consent.
 
@@ -23,9 +23,11 @@ No SMS messages are sent to customers who have not explicitly opted in.
 -------------------------------- paste to here --------------------------------
 
 
-Exact disclosure shown next to the checkbox (consent version 2026-11-04)
-------------------------------------------------------------------------
-By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.
+Exact disclosure shown next to the checkbox (consent version 2026-11-04.2)
+--------------------------------------------------------------------------
+By checking this box, I expressly consent to receive conversational SMS messages from SDS UZ INC for two-way communication regarding freight quote inquiries, load availability, load details, pickup and delivery coordination, shipment status discussions, and dispatch-related customer support.
+
+These messages may include responses to my inquiries and ongoing conversations with SDS UZ INC.
 
 Message frequency may vary. Message and data rates may apply. Reply STOP to opt out. Reply HELP for assistance.
 

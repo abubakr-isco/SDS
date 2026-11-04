@@ -286,28 +286,27 @@ export const quoteForm = {
  * RingCentral campaign, and change `smsConsentVersion` whenever the wording changes.
  */
 export const smsConsentParagraphs = [
-  'By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, shipment updates, delivery notifications, and customer support.',
-  'Message frequency may vary. Message and data rates may apply.',
-  'Reply STOP to unsubscribe. Reply HELP for assistance.',
+  'By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.',
+  'Message frequency may vary. Message and data rates may apply. Reply STOP to opt out. Reply HELP for assistance.',
   'Consent is not a condition of purchase.',
 ] as const
 
 export const smsConsentLinks = [
   { label: 'Privacy Policy', href: 'https://sdsuz-inc.com/privacy' },
-  { label: 'SMS Terms', href: 'https://sdsuz-inc.com/sms-terms' },
+  { label: 'Terms & Conditions', href: 'https://sdsuz-inc.com/sms-terms' },
 ] as const
 
-export const smsConsentText = [
-  ...smsConsentParagraphs,
-  smsConsentLinks.map((l) => `${l.label}: ${l.href}`).join('\n'),
-].join('\n\n')
+export const smsConsentText = [...smsConsentParagraphs, ...smsConsentLinks.map((l) => `${l.label}: ${l.href}`)].join(
+  '\n\n',
+)
 
 /**
  * Date the wording went live, plus a revision number for a second change on the same day.
  * History: 2026-11-02 ("See our Privacy Policy and SMS Terms & Conditions."),
- * 2026-11-02.2 (policy links written out as full URLs).
+ * 2026-11-02.2 (policy links written out as full URLs),
+ * 2026-11-04 (message types matching the RingCentral "Conversations (external)" use case).
  */
-export const smsConsentVersion = '2026-11-02.2'
+export const smsConsentVersion = '2026-11-04'
 
 /** Machine-readable consent source recorded with each request. */
 export const smsConsentSource = 'website_quote_form'

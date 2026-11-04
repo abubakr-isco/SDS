@@ -9,7 +9,7 @@ End users opt in directly through the SDS UZ INC website at https://sdsuz-inc.co
 
 Customers complete the Request a Freight Quote form and enter their mobile phone number. An optional, unchecked-by-default SMS consent checkbox is displayed with the complete SMS disclosure.
 
-Customers must manually check the box to consent to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, shipment updates, delivery notifications, and customer support.
+Customers must manually check the box to consent to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.
 
 The consent checkbox is optional. Customers can submit a quote request without consenting to receive SMS messages. Providing a phone number alone does not constitute consent.
 
@@ -23,18 +23,19 @@ No SMS messages are sent to customers who have not explicitly opted in.
 -------------------------------- paste to here --------------------------------
 
 
-Exact disclosure shown next to the checkbox (consent version 2026-11-02.2)
---------------------------------------------------------------------------
-By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, shipment updates, delivery notifications, and customer support.
+Exact disclosure shown next to the checkbox (consent version 2026-11-04)
+------------------------------------------------------------------------
+By checking this box, I agree to receive SMS messages from SDS UZ INC regarding freight quote follow-ups, load availability and details, pickup and delivery coordination, shipment status updates, and dispatch-related customer support.
 
-Message frequency may vary. Message and data rates may apply.
-
-Reply STOP to unsubscribe. Reply HELP for assistance.
+Message frequency may vary. Message and data rates may apply. Reply STOP to opt out. Reply HELP for assistance.
 
 Consent is not a condition of purchase.
 
 Privacy Policy: https://sdsuz-inc.com/privacy
-SMS Terms: https://sdsuz-inc.com/sms-terms
+
+Terms & Conditions: https://sdsuz-inc.com/sms-terms
+
+The message types match the campaign's use case, Conversations (external).
 
 
 How each statement was checked (2026-11-04, live site https://sdsuz-inc.com)
@@ -42,7 +43,7 @@ How each statement was checked (2026-11-04, live site https://sdsuz-inc.com)
 - Opt-in on the website quote form: the form at https://sdsuz-inc.com/#quote ("Request a
   Freight Quote", reached from the "Get a freight quote" button) has a "Phone number" field
   followed directly by a separate "Text message updates - Optional" checkbox with the
-  disclosure above. Screenshots 01, 02, 03.
+  disclosure above. Screenshots 01, 02, 03, 07.
 - Unchecked by default, not required: verified in the browser on the live site; the
   checkbox has no "required" attribute.
 - A quote can be sent without consent: a submission with the box unchecked reaches the
